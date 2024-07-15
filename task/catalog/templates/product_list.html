@@ -1,0 +1,56 @@
+{% extends 'home.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        {% for item in products %}
+        <div class="col-3">
+            <p>Image URL: {{ item.photo.url }}</p>
+            <img src="/media/{{ item.product_preview.url }}" class="card-img-top" alt="{{ item.product_name }}">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ item.product_name }}</p>
+                    <h1 class="card-title pricing-card-title">{{ item.product_name }}</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- Описание продукта: {{item.product_description}}</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                VegStore
+                <small class="d-block mb-3 text-muted">&copy; 2023</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Категории</h5>
+                {% for item in categories %}
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">{{ item.category_name }}</a></li>
+                </ul>
+                {% endfor %}
+            </div>
+            <div class="col-6 col-md">
+                <h5>Дополнительно</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="https://sky.pro/">Мы пишем</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>О нас</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="/contacts/">Контакты</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}
