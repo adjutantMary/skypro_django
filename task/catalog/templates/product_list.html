@@ -5,15 +5,14 @@
     <div class="row text-center">
         {% for item in products %}
         <div class="col-3">
-            <p>Image URL: {{ item.photo.url }}</p>
-            <img src="/media/{{ item.product_preview.url }}" class="card-img-top" alt="{{ item.product_name }}">
+            <img src="{{ item.product_preview.url }}" class="card-img-top" alt="{{ item.product_name }}">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                    <h4 class="my-0 font-weight-normal">{{ item.product_name }}</h4>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">{{ item.product_name }}</p>
-                    <h1 class="card-title pricing-card-title">{{ item.product_name }}</h1>
+                    <p class="card-text">{{ item.category }}</p>
+                    <h1 class="card-title pricing-card-title">{{ item.product_cost }} руб. </h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>- Описание продукта: {{item.product_description}}</li>
                     </ul>
