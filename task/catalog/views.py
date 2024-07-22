@@ -6,8 +6,7 @@ from .models import Product, Category
 def home(request):
     products = Product.objects.all()
     categories = Category.objects.all()
-    context = {"products": products,
-               "categories": categories}
+    context = {"products": products, "categories": categories}
     return render(request, "product_list.html", context)
 
 
@@ -19,4 +18,3 @@ def product_detail(request, pk):
 
 def contacts(request):
     return render(request, "contacts.html")
-

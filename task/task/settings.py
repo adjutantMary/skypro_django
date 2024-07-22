@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 import os
 from pathlib import Path
 
@@ -39,10 +40,7 @@ DEFAULT_APPS = [
     "django.contrib.staticfiles",
 ]
 
-NEW_APPS = [
-    "catalog",
-    "django_dump_load_utf8"
-]
+NEW_APPS = ["catalog", "django_dump_load_utf8"]
 
 INSTALLED_APPS = DEFAULT_APPS + NEW_APPS
 
@@ -81,13 +79,13 @@ WSGI_APPLICATION = "task.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mariya_db', # Название БД
-        'USER': 'postgres', # Пользователь для подключения
-        'PASSWORD': 'postgres', # Пароль для этого пользователя
-        'HOST': '127.0.0.1', # Адрес, на котором развернут сервер БД
-        'PORT': 5432, # Порт, на котором работает сервер БД
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "study",  # Название БД
+        "USER": "postgres",  # Пользователь для подключения
+        "PASSWORD": "jettsql",  # Пароль для этого пользователя
+        "HOST": "127.0.0.1",  # Адрес, на котором развернут сервер БД
+        "PORT": 5432,  # Порт, на котором работает сервер БД
     }
 }
 
@@ -137,6 +135,5 @@ STATIC_FILES_FINDERS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

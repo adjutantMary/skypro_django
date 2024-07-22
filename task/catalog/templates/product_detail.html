@@ -5,10 +5,10 @@
         <div class="col-3">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                    <h4 class="my-0 font-weight-normal">{{ product.product_name }}</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">{{ product.product_name }}</h1>
+                    <h1 class="card-title pricing-card-title">{{ product.product_cost }} руб. </h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>- Описание продукта: {{ product.product_description }}</li>
                         <li>- Название категории: {{ product.category_name }}</li>
