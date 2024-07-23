@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{ product.product_cost }} руб. </h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        <li>- Описание продукта: {{ product.product_description }}</li>
+                        <li>- Описание продукта: {{ product.product_description | truncatechars:100 }}</li>
                         <li>- Название категории: {{ product.category_name }}</li>
 
                     </ul>
