@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -45,3 +47,55 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()\
+            .filter(status=Post.Status.PUBLISHED)
+
+
+class Post(models.Model):
+
+    objects = models.Manager()
+
+    class Status(models.TextChoices):
+        '''Класс для установки статуса поста'''
+
+        # Draft - черновик, Published - опубликован
+        # текущие перечисляемые типы, которые доступны
+        DRAFT = 'DF', 'Draft'
+        PUBLISHED = 'PB', 'Published'
+
+    title = models.CharField('Заголовок', max_length=128)
+    slug = models.SlugField(max_length=250,
+                            unique_for_date="publish")
+    content = models.TextField('Содержимое')
+    preview = models.ImageField('Превью', upload_to='posts/%Y/%m/%d/')
+    publish = models.DateTimeField(default=timezone.now)
+    status = models.CharField(
+        max_length=2,
+        choices=Status.choices,
+        default=Status.DRAFT
+    )
+    published = PublishedManager()
+    views = models.IntegerField('Количество просмотров', default=0)
+
+
+    def __str__(self):
+        return self.title
+
+
+    def get_absolute_url(self):
+        return reverse('post_detail', kwargs={'slug': self.slug})
+
+
+    class Meta:
+        ordering = ['-publish']
+
+        # определение индекса базы данных по полю publish
+        # индекс повышает производительность запросов, которые фильтруют или упорядочивают запросы по полю publish
+        indexes = [
+            models.Index(fields=['-publish'])
+        ]
+
