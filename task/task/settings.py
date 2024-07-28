@@ -40,7 +40,10 @@ DEFAULT_APPS = [
     "django.contrib.staticfiles",
 ]
 
-NEW_APPS = ["catalog", "django_dump_load_utf8"]
+NEW_APPS = [
+    "catalog",
+    "django_dump_load_utf8",
+]
 
 INSTALLED_APPS = DEFAULT_APPS + NEW_APPS
 
