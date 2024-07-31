@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from .forms import VersionForm, ProductForm
 
 import random
 
@@ -121,3 +122,66 @@ class PostDeleteView(DeleteView):
         product.increment_views()
         context = {'product': product}
         return render(request, 'product_detail.html', context)
+
+
+class VersionListView(ListView):
+    model = Version
+    template_name = 'version_list.html'
+    context_object_name = 'versions'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        product = Product.objects.first()
+        
+        if product:
+            product_id = product.pk
+        else:
+            product_id = None
+        
+        context['product_id'] = product_id
+        
+        return context
+    
+
+class VersionDetailView(DeleteView):
+    model = Version
+    template_name = 'version_detail.html'
+    context_object_name = 'versions'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['product_id'] = kwargs['product_id']
+        
+        return context
+    
+
+class VersionCreateView(CreateView):
+    model = Version
+    fields = ['product', 'version_number', 'version_name', 'is_current']
+    template_name = 'version_form.html'
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['product'] = self.kwargs['product_id']
+        return initial
+    
+
+class VersionUpdateView(UpdateView):
+    model = Version
+    form_class = VersionForm
+    fields = ['product', 'version_number', 'version_name', 'is_current']
+    template_name = 'version_form.html'
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('version')
+    
+
+class VersionDeleteView(DeleteView):
+    model = Version
+    template_name = 'version_confirm_delete.html'
+    success_url = reverse_lazy('version_list.html')
+    
+    def get_success_url(self) -> str:
+        return self.success_url
+
