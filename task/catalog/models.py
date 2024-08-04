@@ -42,8 +42,8 @@ class Product(models.Model):
         verbose_name="Название категории",
     )
     product_cost = models.IntegerField("Цена за покупку")
-    created_at = models.DateTimeField("Дата создания")
-    upload_at = models.DateTimeField("Дата последнего изменения")
+    created_at = models.DateTimeField("Дата создания",  null=True)
+    upload_at = models.DateTimeField("Дата последнего изменения", null=True)
 
     def __str__(self):
         return self.product_name

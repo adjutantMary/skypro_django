@@ -5,6 +5,6 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("catalog/", include("catalog.urls", namespace="catalog")),
-    path("post/", include("catalog.urls", namespace="post"))
+    path('', include('catalog.urls')),
+    # path("post/", include("catalog.urls", namespace="post"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

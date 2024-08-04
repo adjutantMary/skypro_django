@@ -15,10 +15,10 @@ class StyleFormMixin:
                 field.widget.attrs["class"] = "forms-control"
 
 
-class ProductForm(forms.ModelForm):
+class ProductForm(forms.ModelForm, StyleFormMixin):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['product_name', 'product_description', 'product_cost', 'product_preview', 'category']
 
     def clean(self):
         cleaned_data = super().clean()

@@ -22,6 +22,19 @@ class ProductTemplateView(TemplateView):
         return self.render_to_response(self.extra_context)
 
 
+# class ProductListView(ListView):
+#     model = Product
+#     template_name = 'product_list.html'
+#     content_object_name = 'object_list'
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         for product in context['object_list']:
+#             active_version = product.version_set.filter(is_current=True).first()
+#             product.active_version = active_version
+#         return context
+
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'product_detail.html'
@@ -122,6 +135,29 @@ class PostDeleteView(DeleteView):
         product.increment_views()
         context = {'product': product}
         return render(request, 'product_detail.html', context)
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'product_form.html'
+    success_url = reverse_lazy('product_list')
+    
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'product_form.html'
+    success_url = reverse_lazy('product_list')    
+    
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'product_confirm_delete.html'
+    success_url = reverse_lazy('product_list')
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('product_list')
 
 
 class VersionListView(ListView):
