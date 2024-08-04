@@ -1,6 +1,8 @@
 import string
 
+from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -11,7 +13,7 @@ import random
 from .models import *
 
 
-class ProductTemplateView(TemplateView):
+class ProductTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'product_list.html'
 
     def get(self, request, *args, **kwargs):
@@ -35,13 +37,23 @@ class ProductTemplateView(TemplateView):
 #         return context
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(DetailView, LoginRequiredMixin):
     model = Product
     template_name = 'product_detail.html'
+    context_object_name = 'product'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset
+    def get_queryset(self, queryset=None):
+        obj = super().get_queryset(queryset=queryset)
+        obj.views += 1
+        obj.save()
+        return obj
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.object
+        active_version = product.version_set.filter(is_current=True).first()
+        context['active_version'] = active_version
+        return context
 
 
 class ContactView(TemplateView):
@@ -137,21 +149,35 @@ class PostDeleteView(DeleteView):
         return render(request, 'product_detail.html', context)
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'product_form.html'
     success_url = reverse_lazy('product_list')
     
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+    
+    
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'product_form.html'
-    success_url = reverse_lazy('product_list')    
+    success_url = reverse_lazy('product_list')
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user)
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if obj.owner != self.request.user:
+            raise PermissionError
+        return obj   
     
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
