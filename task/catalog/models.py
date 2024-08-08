@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
+from users.models import *
+
 
 class Category(models.Model):
 
@@ -44,6 +46,8 @@ class Product(models.Model):
     product_cost = models.IntegerField("Цена за покупку")
     created_at = models.DateTimeField("Дата создания",  null=True)
     upload_at = models.DateTimeField("Дата последнего изменения", null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
 
     def __str__(self):
         return self.product_name
