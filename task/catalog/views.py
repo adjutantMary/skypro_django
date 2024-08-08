@@ -13,28 +13,20 @@ import random
 from .models import *
 
 
-class ProductTemplateView(LoginRequiredMixin, TemplateView):
+
+class ProductTemplateView(ListView):
+    model = Product
     template_name = 'product_list.html'
+    context_object_name = 'products'
 
-    def get(self, request, *args, **kwargs):
-        self.extra_context = {
-            "products": Product.objects.all(),
-            "categories": Category.objects.all(),
-        }
-        return self.render_to_response(self.extra_context)
-
-
-# class ProductListView(ListView):
-#     model = Product
-#     template_name = 'product_list.html'
-#     content_object_name = 'object_list'
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         for product in context['object_list']:
-#             active_version = product.version_set.filter(is_current=True).first()
-#             product.active_version = active_version
-#         return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        for product in context['products']:
+            active_version = product.version_set.filter(is_current=True).first()
+            product.active_version = active_version
+            product.save()
+        return context
 
 
 class ProductDetailView(DetailView, LoginRequiredMixin):
