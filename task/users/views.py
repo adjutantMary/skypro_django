@@ -90,7 +90,7 @@ class CustomPasswordResetView(FormView):
             random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=12)
         )
         
-        email = form.cleaned_data(random_password)
+        email = form.cleaned_data['email']
         
         for user in form.get_users(email):
             user.set_password(random_password)

@@ -76,17 +76,17 @@ class PostListView(ListView):
         return published_posts
 
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'post_detail.html'
-    context_object_name = 'post'
-    queryset = Post.objects.all()
+# class PostDetailView(DetailView):
+#     model = Post
+#     template_name = 'post_detail.html'
+#     context_object_name = 'post'
+#     queryset = Post.objects.all()
 
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        obj.views += 1
-        obj.save()
-        return obj
+#     def get_object(self, queryset=None):
+#         obj = super().get_object(queryset=queryset)
+#         obj.views += 1
+#         obj.save()
+#         return obj
 
 
 class PostCreateView(CreateView):
