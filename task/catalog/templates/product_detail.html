@@ -19,11 +19,13 @@
                             <a>Нет активной версии</a>
                             {% endif %}
                         </h4>
-                        <a href="{% url 'product_update' pk=product.pk %}" class="btn btn-primary">Редактировать</a>
-                        <a href="{% url 'product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>
                     </ul>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
+                {% if object.owner == user %}
+                <a href="{% url 'product_update' pk=product.pk %}" class="btn btn-primary">Редактировать</a>
+                <a href="{% url 'product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>
