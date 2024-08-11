@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.decorators.cache import cache_page
 from .views import *
 
 
@@ -13,8 +14,8 @@ urlpatterns = [
     path("product/<int:pk>/update/", ProductUpdateView.as_view(), name='product_update'),
     path("product/<int:pk>/delete/", ProductDeleteView.as_view(), name='product_delete'),
     path("post_list/", PostListView.as_view(), name='post_list'),
-    # path("<slug:slug>/", PostDetailView.as_view(), name='post_detail'),
     path("post_list/create/", PostCreateView.as_view(), name='create_view'),
+    path('product/<int:pk>/', cache_page(60 * 15)(ProductDetailView.as_view()), name='product_detail'),
     path("<slug:slug>/update/", PostUpdateView.as_view(), name='post_update'),
     path("<slug:slug>/delete/", PostDeleteView.as_view(), name='post_delete'),
     path("versions/", VersionListView.as_view(), name='version_list'),

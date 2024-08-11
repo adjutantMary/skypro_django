@@ -7,6 +7,7 @@ from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .forms import VersionForm, ProductForm
+from .services import get_categories
 
 import random
 
@@ -52,8 +53,15 @@ class ContactView(TemplateView):
     template_name = 'contacts.html'
 
     def post(self, request, *args, **kwargs):
-        print("Данные сохранены")
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        
         return render(request, self.template_name)
+    
+    def get(self, request, *args, **kwargs):
+        categories = get_categories
+        return render(request, self.template_name, {'categories': categories})
 
 
 class PostView(TemplateView):
@@ -74,19 +82,6 @@ class PostListView(ListView):
         queryset = super().get_queryset()
         published_posts = queryset.filter(status=Post.Status.PUBLISHED)
         return published_posts
-
-
-# class PostDetailView(DetailView):
-#     model = Post
-#     template_name = 'post_detail.html'
-#     context_object_name = 'post'
-#     queryset = Post.objects.all()
-
-#     def get_object(self, queryset=None):
-#         obj = super().get_object(queryset=queryset)
-#         obj.views += 1
-#         obj.save()
-#         return obj
 
 
 class PostCreateView(CreateView):
