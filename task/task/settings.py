@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3v%$$dzb&%1g6nyj23e-@@&#bjdv9txpn5-cnxk6t)hz)!w_^("
-
+SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', default=False)
 
 ALLOWED_HOSTS = []
 
@@ -85,11 +87,11 @@ WSGI_APPLICATION = "task.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "study",  # Название БД
-        "USER": "postgres",  # Пользователь для подключения
-        "PASSWORD": "jettsql",  # Пароль для этого пользователя
-        "HOST": "127.0.0.1",  # Адрес, на котором развернут сервер БД
-        "PORT": 5432,  # Порт, на котором работает сервер БД
+        "NAME": os.getenv("NAME"),  # Название БД
+        "USER": os.getenv("USER"),  # Пользователь для подключения
+        "PASSWORD": os.getenv("PASSWORD"),  # Пароль для этого пользователя
+        "HOST": os.getenv("HOST"),  # Адрес, на котором развернут сервер БД
+        "PORT" :os.getenv("PORT"),  # Порт, на котором работает сервер БД
     }
 }
 
@@ -160,3 +162,14 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': os.getenv('REDIS_URL', default='redis://localhost:6379/0'),
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
+        }
+    }
