@@ -1,0 +1,33 @@
+{% extends 'home.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ product.product_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ product.product_cost }} руб. </h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- Описание продукта: {{ product.product_description | truncatechars:100 }}</li>
+                        <li>- Название категории: {{ product.category_name }}</li>
+                        <li>- Номер версии: {{ product.version_number }}</li>
+                        <h4 class="my-4 font-weight-normal">{% if active_version %}
+                            <a>Текущая версия: {{ active_version.version_number }} ({{ active_version.version_name }})</a>
+                            {% else %}
+                            <a>Нет активной версии</a>
+                            {% endif %}
+                        </h4>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                </div>
+                {% if object.owner == user %}
+                <a href="{% url 'product_update' pk=product.pk %}" class="btn btn-primary">Редактировать</a>
+                <a href="{% url 'product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
