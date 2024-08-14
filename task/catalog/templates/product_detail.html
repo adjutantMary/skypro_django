@@ -1,4 +1,4 @@
-{% extends 'home.html' %}
+{% extends 'base.html' %}
 {% block content %}
 <div class="container">
     <div class="row text-center">
@@ -13,7 +13,7 @@
                         <li>- Описание продукта: {{ product.product_description | truncatechars:100 }}</li>
                         <li>- Название категории: {{ product.category_name }}</li>
                         <li>- Номер версии: {{ product.version_number }}</li>
-                        <h4 class="my-4 font-weight-normal">{% if active_version %}
+                        {% comment %} <h4 class="my-4 font-weight-normal">{% if active_version %}
                             <a>Текущая версия: {{ active_version.version_number }} ({{ active_version.version_name }})</a>
                             {% else %}
                             <a>Нет активной версии</a>
@@ -21,7 +21,7 @@
                         </h4>
                     </ul>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
-                </div>
+                </div> {% endcomment %}
                 {% if object.owner == user %}
                 <a href="{% url 'product_update' pk=product.pk %}" class="btn btn-primary">Редактировать</a>
                 <a href="{% url 'product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>

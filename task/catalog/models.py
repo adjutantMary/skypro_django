@@ -48,9 +48,15 @@ class Product(models.Model):
     upload_at = models.DateTimeField("Дата последнего изменения", null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
-
+    views = models.IntegerField(default=0, verbose_name='Количество просмотров')
+    
     def __str__(self):
         return self.product_name
+    
+    def increment_views(self):
+        self.views += 1
+        self.save()
+        return self.views
 
 
 class PublishedManager(models.Manager):

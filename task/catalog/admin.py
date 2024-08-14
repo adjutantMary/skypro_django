@@ -17,15 +17,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_help_text = "Поиск работает по названию продукта или его описанию"
     actions = ['publish_products', 'unpublish_products']
 
-        
-    @staticmethod
-    def publish_products(self, request, queryset):
-        queryset.update(is_published=True)
-    
-    @staticmethod
-    def unpublish_products(self, request, queryset):
-        queryset.update(is_published=False)
-        
     @admin.action(description="Опубликовать выбранные продукты")
     def publish_products(self, request, queryset):
         queryset.update(is_published=True)
